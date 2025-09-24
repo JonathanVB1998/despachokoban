@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],  // necesario para *ngFor y ngClass
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -12,30 +12,30 @@ export class HomeComponent {
   board: string[][] = [
     ['#', '#', '#', '#', '#'],
     ['#', 'P', '.', '.', '#'],
-    ['#', '.', 'B', '.', '#'],
-    ['#', '.', '.', 'G', '#'],
-    ['#', '.', '.', '.', '#'],
+    ['#', '.', 'O', 'O', '#'],
+    ['#', '.', '.', 'X', '#'],
+    ['#', '.', '.', 'X', '#'],
     ['#', '#', '#', '#', '#']
   ];
 
-  // Guardamos dónde están las metas originales
-  goalBoard: boolean[][] = this.board.map(row => row.map(cell => cell === 'G'));
-
   playerPos = { x: 1, y: 1 };
+
+  movableBoxes = ['O'];  // todas las cajas movibles
+  goals = ['X'];         // todas las metas
+
+  // Guardamos las metas para restaurarlas cuando la caja o jugador se mueva
+  goalBoard: string[][] = this.board.map(row => row.map(cell => this.goals.includes(cell) ? cell : ''));
 
   @HostListener('window:keydown', ['$event'])
   handleKey(event: KeyboardEvent) {
-    const key = event.key;
     let dx = 0, dy = 0;
-
-    if (key === 'ArrowUp') dy = -1;
-    if (key === 'ArrowDown') dy = 1;
-    if (key === 'ArrowLeft') dx = -1;
-    if (key === 'ArrowRight') dx = 1;
-
-    if (dx !== 0 || dy !== 0) {
-      this.movePlayer(dx, dy);
+    switch(event.key) {
+      case 'ArrowUp': dy = -1; break;
+      case 'ArrowDown': dy = 1; break;
+      case 'ArrowLeft': dx = -1; break;
+      case 'ArrowRight': dx = 1; break;
     }
+    if (dx !== 0 || dy !== 0) this.movePlayer(dx, dy);
   }
 
   movePlayer(dx: number, dy: number) {
@@ -50,8 +50,8 @@ export class HomeComponent {
 
     if (nextCell === '#') return;
 
-    // Empujar caja
-    if (nextCell === 'B' || nextCell === 'X') {
+    // Empujar caja si es movible
+    if (this.movableBoxes.includes(nextCell)) {
       const boxX = newX + dx;
       const boxY = newY + dy;
 
@@ -60,30 +60,28 @@ export class HomeComponent {
 
       const boxDest = this.board[boxY][boxX];
 
-      if (boxDest === '.' || boxDest === 'G') {
-        this.board[boxY][boxX] = this.goalBoard[boxY][boxX] ? 'B' : 'B';
-      } else {
-        return;
+      if (boxDest === '.' || this.goals.includes(boxDest)) {
+        // Mover la caja sin cambiar su letra
+        this.board[boxY][boxX] = nextCell;
+
+        // Restaurar celda anterior de la caja
+        this.board[newY][newX] = this.goalBoard[newY][newX] || '.';
+
+        // Restaurar celda anterior del jugador
+        this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] || '.';
+
+        // Mover jugador
+        this.playerPos = { x: newX, y: newY };
+        this.board[newY][newX] = 'P';
       }
-
-      // Restaurar celda anterior de la caja
-      this.board[newY][newX] = this.goalBoard[newY][newX] ? 'G' : '.';
-
-      // Restaurar celda anterior del jugador
-      this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] ? 'G' : '.';
-
-      // Mover jugador
-      this.playerPos = { x: newX, y: newY };
-      this.board[newY][newX] = this.goalBoard[newY][newX] ? 'P' : 'P';
       return;
     }
 
-    // Mover jugador a celda libre u objetivo
-    if (nextCell === '.' || nextCell === 'G') {
-      this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] ? 'G' : '.';
+    // Mover jugador a celda libre o meta
+    if (nextCell === '.' || this.goals.includes(nextCell)) {
+      this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] || '.';
       this.playerPos = { x: newX, y: newY };
-      this.board[newY][newX] = this.goalBoard[newY][newX] ? 'P' : 'P';
+      this.board[newY][newX] = 'P';
     }
   }
 }
-
