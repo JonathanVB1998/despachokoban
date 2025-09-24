@@ -9,14 +9,17 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  board: string[][] = [
-    ['#', '#', '#', '#', '#'],
-    ['#', 'P', '.', '.', '#'],
-    ['#', '.', 'O', 'O', '#'],
-    ['#', '.', '.', 'X', '#'],
-    ['#', '.', '.', 'X', '#'],
-    ['#', '#', '#', '#', '#']
-  ];
+board: string[][] = [
+  ['#', '#', '#', '#', '#', '#', '#', '#'],
+  ['#', 'P', '.', '.', '.', '.', '.', '#'],
+  ['#', '.', 'O', 'O', '.', '.', '.', '#'],
+  ['#', '.', '.', '.', 'X', '.', '.', '#'],
+  ['#', '.', '.', '.', 'X', '.', '.', '#'],
+  ['#', '.', '.', '.', '.', '.', '.', '#'],
+  ['#', '#', '#', '#', '#', '#', '#', '#']
+];
+
+
 
   playerPos = { x: 1, y: 1 };
 
@@ -38,50 +41,58 @@ export class HomeComponent {
     if (dx !== 0 || dy !== 0) this.movePlayer(dx, dy);
   }
 
-  movePlayer(dx: number, dy: number) {
-    const newX = this.playerPos.x + dx;
-    const newY = this.playerPos.y + dy;
+movePlayer(dx: number, dy: number) {
+  const newX = this.playerPos.x + dx;
+  const newY = this.playerPos.y + dy;
 
-    if (newY < 0 || newY >= this.board.length) return;
-    if (newX < 0 || newX >= this.board[0].length) return;
+  if (newY < 0 || newY >= this.board.length) return;
+  if (newX < 0 || newX >= this.board[0].length) return;
 
-    const nextCell = this.board[newY][newX];
-    const currentCell = this.board[this.playerPos.y][this.playerPos.x];
+  const nextCell = this.board[newY][newX];
+  const currentCell = this.board[this.playerPos.y][this.playerPos.x];
 
-    if (nextCell === '#') return;
+  if (nextCell === '#') return;
 
-    // Empujar caja si es movible
-    if (this.movableBoxes.includes(nextCell)) {
-      const boxX = newX + dx;
-      const boxY = newY + dy;
+  if (this.movableBoxes.includes(nextCell)) {
+    const boxX = newX + dx;
+    const boxY = newY + dy;
 
-      if (boxY < 0 || boxY >= this.board.length) return;
-      if (boxX < 0 || boxX >= this.board[0].length) return;
+    if (boxY < 0 || boxY >= this.board.length) return;
+    if (boxX < 0 || boxX >= this.board[0].length) return;
 
-      const boxDest = this.board[boxY][boxX];
+    const boxDest = this.board[boxY][boxX];
 
-      if (boxDest === '.' || this.goals.includes(boxDest)) {
-        // Mover la caja sin cambiar su letra
-        this.board[boxY][boxX] = nextCell;
-
-        // Restaurar celda anterior de la caja
-        this.board[newY][newX] = this.goalBoard[newY][newX] || '.';
-
-        // Restaurar celda anterior del jugador
-        this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] || '.';
-
-        // Mover jugador
-        this.playerPos = { x: newX, y: newY };
-        this.board[newY][newX] = 'P';
-      }
-      return;
-    }
-
-    // Mover jugador a celda libre o meta
-    if (nextCell === '.' || this.goals.includes(nextCell)) {
+    if (boxDest === '.' || this.goals.includes(boxDest)) {
+      this.board[boxY][boxX] = nextCell;  // mover caja
+      this.board[newY][newX] = this.goalBoard[newY][newX] || '.';
       this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] || '.';
       this.playerPos = { x: newX, y: newY };
       this.board[newY][newX] = 'P';
     }
+    this.checkCompletion();  // revisar si completó
+    return;
   }
+
+  if (nextCell === '.' || this.goals.includes(nextCell)) {
+    this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] || '.';
+    this.playerPos = { x: newX, y: newY };
+    this.board[newY][newX] = 'P';
+    this.checkCompletion();  // revisar si completó
+  }
+}
+
+// Función para revisar si todas las metas tienen caja encima
+checkCompletion() {
+  for (let y = 0; y < this.board.length; y++) {
+    for (let x = 0; x < this.board[y].length; x++) {
+      if (this.goalBoard[y][x] && !this.movableBoxes.includes(this.board[y][x])) {
+        return; // aún hay meta vacía, no completado
+      }
+    }
+  }
+   setTimeout(() => {
+    alert('¡Completado!');
+  }, 200);// todas las metas tienen caja
+}
+
 }
