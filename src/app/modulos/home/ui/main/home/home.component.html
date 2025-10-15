@@ -1,27 +1,57 @@
-
-
-
 <div style="text-align: center; margin-top: 50px;">
   <h1>Cuenta regresiva</h1>
   <div style="font-size: 48px; font-weight: bold;">{{ display }}</div>
   <br>
 </div>
 
+<!-- Contenedor principal con flex -->
+<div class="main-container" style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 20px;width: 99%;">
 
-
-<div class="container-koban">
-  
-<div class="board">
-  <div *ngFor="let row of board; let y = index" class="row">
-    <div *ngFor="let cell of row" class="cell" [ngClass]="cell">
-      {{ cell }}
+  <!-- Lado izquierdo: board y puntuaje -->
+  <div class="left-side" style="width: 62%;">
+    <div class="container-koban">
+      <div class="board">
+        <div *ngFor="let row of board; let y = index" class="row">
+          <div *ngFor="let cell of row" class="cell" [ngClass]="cell">
+            {{ cell }}
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <h1 style="font-size: 20px; margin: 0;">Puntuaje</h1>
+        <div style="font-size: 20px; font-weight: bold;">{{ score }}</div>
+        <br>
+      </div>
     </div>
   </div>
-</div>
-<div style="text-align: center;">
-  <h1 style="font-size: 20px; margin: 0;">Puntuaje</h1>
-  <div style="font-size: 20px; font-weight: bold;">{{ score }}</div>
-  <br>
-</div>
+
+  <!-- Lado derecho: tabla de movimientos -->
+<div class="right-side" style="width: 25%;">
+  <h2 class="table-title">Mejores Puntuajes</h2>
+  <table class="scoreboard-table">
+    <thead>
+      <tr>
+        <th>Jugador</th>
+        <th>Puntuaje</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of bestRecords">
+        <td>{{ record.nameGamer }}</td>
+        <td>{{ record.point }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
+</div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Ingrese su nombre</h2>
+    <input type="text" [(ngModel)]="playerName" placeholder="Nombre del jugador" />
+    <button (click)="saveScore()" class="save-btn">Guardar</button>
+  </div>
+</div>

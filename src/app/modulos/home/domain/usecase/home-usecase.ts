@@ -4,6 +4,7 @@ import { ResponseApi } from "../../../shared/domain/models/responseApi";
 import { Observable } from "rxjs";
 import { GameMap } from "../../../shared/domain/models/gameMap";
 import { MovementAddedRequest } from "../../../shared/domain/request/movementAddedRequest";
+import { GamerRequest } from "../../../shared/domain/request/gamerRequest";
 
 @Injectable({
     providedIn: 'root'
@@ -19,12 +20,20 @@ export class HomeUserCases{
         return this._homeGateway.getTotalMaps();
     }
 
+    getRecordKoban():Observable<ResponseApi>{
+        return this._homeGateway.getRecordKoban();
+    }
+
     getTimeGame():Observable<ResponseApi>{
         return this._homeGateway.getTimeGame();
     }
 
     movementAdded(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
         return this._homeGateway.movementAdded(movementAdd);
+    }
+
+    userAdded(movementAdd: GamerRequest):Observable<ResponseApi>{
+        return this._homeGateway.userAdded(movementAdd);
     }
 
     recordKoban(movementAdd: MovementAddedRequest):Observable<ResponseApi>{

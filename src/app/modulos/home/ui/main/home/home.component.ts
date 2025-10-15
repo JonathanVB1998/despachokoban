@@ -4,7 +4,8 @@ import { HomeService } from '../../../../shared/infraestructure/services/home/ho
 import { GameMap } from '../../../../shared/domain/models/gameMap';
 import { FormsModule } from '@angular/forms';
 import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
-
+import { RecordKoban } from '../../../../shared/domain/models/RecordKoban';
+import { GamerRequest } from '../../../../shared/domain/request/gamerRequest';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -15,7 +16,7 @@ import { MovementAddedRequest } from '../../../../shared/domain/request/movement
 export class HomeComponent {
   minutesInput: number = 0; // Lo que ingresará el usuario
   display: string = '00:00'; // Lo que se muestra
-  userId: number = 1;
+  userId: number = 0;
   score: number = 0;
   private interval: any;
 
@@ -24,10 +25,10 @@ export class HomeComponent {
   ){}
   gameMap: GameMap = { level: 1};
   movementAdd: MovementAddedRequest = {levelId: 0, userId: 0, minutes: ""}
-
+  bestRecords: RecordKoban[] = [];
   board: string[][] = [];
   totalLevel: number = 0;
-
+  gamer: GamerRequest = {name: ""}
   playerPos = { x: 1, y: 1 };
 
   movableBoxes = ['O'];  // todas las cajas movibles
@@ -49,6 +50,10 @@ export class HomeComponent {
   }
 
 movePlayer(dx: number, dy: number) {
+  if(this.userId == 0){
+    this.openModal();
+    return;
+  }
   const newX = this.playerPos.x + dx;
   const newY = this.playerPos.y + dy;
 
@@ -118,6 +123,7 @@ checkCompletion() {
       this.finishLevel();
       this.display = "00:00";
       this.recordKoban();
+      this.getRecordKoban();
     }
 
   }, 200);// todas las metas tienen caja
@@ -125,7 +131,10 @@ checkCompletion() {
  async ngOnInit(): Promise<void>{
   this.getTotalMaps();
   this.getMap();
-  this.startCountdown();
+  this.getRecordKoban();
+
+  if(this.userId == 0)
+    this.openModal();
  }
 
 async getMap() {
@@ -151,6 +160,10 @@ async getTotalMaps() {
   this.totalLevel = await this._homeService.getTotalMaps();
 }
 
+async getRecordKoban(){
+  this.bestRecords = await this._homeService.getRecordKoban();
+}
+
 async movementAdded(){
   this.movementAdd.levelId = this.gameMap.level;
   this.movementAdd.userId = this.userId;
@@ -158,10 +171,17 @@ async movementAdded(){
   await this._homeService.movementAdded(this.movementAdd);
 }
 
+async userAdded() {
+  this.userId = await this._homeService.userAdded(this.gamer);
+
+   this.startCountdown();
+}
+
 async recordKoban(){
   this.movementAdd.userId = this.userId;
-
-  await this._homeService.recordKoban(this.movementAdd);
+  if(this.score > 0){
+    await this._homeService.recordKoban(this.movementAdd);
+  }
 }
 
 async finishLevel(){
@@ -192,6 +212,9 @@ async startCountdown() {
       if (totalSeconds < 0) {
         clearInterval(this.interval);
         this.display = '¡Tiempo terminado!';
+        this.finishLevel();
+        this.recordKoban();
+        this.getRecordKoban();
         return;
       }
       this.updateDisplay(totalSeconds);
@@ -223,4 +246,24 @@ async startCountdown() {
 
   await this._homeService.resetLevelComplete(this.movementAdd);
   }
+
+  isModalOpen = false;
+playerName: string = '';
+
+openModal() {
+  this.isModalOpen = true;
+}
+
+closeModal() {
+  this.isModalOpen = false;
+}
+
+saveScore() {
+  if(this.playerName.trim() !== '') {
+    this.gamer.name = this.playerName.trim();
+    this.userAdded();
+    this.closeModal();
+  }
+}
+
 }
