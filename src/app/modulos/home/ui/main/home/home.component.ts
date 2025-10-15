@@ -115,7 +115,9 @@ checkCompletion() {
       this.finishLevel();
       this.getMap();
     } else{
-      console.log("Finalizo el Juego, felicidades");
+      this.finishLevel();
+      this.display = "00:00";
+      this.recordKoban();
     }
 
   }, 200);// todas las metas tienen caja
@@ -154,6 +156,12 @@ async movementAdded(){
   this.movementAdd.userId = this.userId;
 
   await this._homeService.movementAdded(this.movementAdd);
+}
+
+async recordKoban(){
+  this.movementAdd.userId = this.userId;
+
+  await this._homeService.recordKoban(this.movementAdd);
 }
 
 async finishLevel(){

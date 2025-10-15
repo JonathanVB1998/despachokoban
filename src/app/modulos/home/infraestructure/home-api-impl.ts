@@ -28,6 +28,10 @@ export class HomeUserApiImpl extends HomeGateway {
         return this.apiService.post<ResponseApi>(`gamemapkoban/movementAdded`, movementAdd);
     }
 
+    recordKoban(movementAdd: MovementAddedRequest) : Observable<ResponseApi> {
+        return this.apiService.post<ResponseApi>(`gamemapkoban/recordKoban`, movementAdd);
+    }
+
     finishLevel(movementAdd: MovementAddedRequest) : Observable<ResponseApi> {
         return this.apiService.post<ResponseApi>(`gamemapkoban/finishLevel`, movementAdd);
     }

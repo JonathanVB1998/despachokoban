@@ -27,6 +27,10 @@ export class HomeUserCases{
         return this._homeGateway.movementAdded(movementAdd);
     }
 
+    recordKoban(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
+        return this._homeGateway.recordKoban(movementAdd);
+    }
+
     finishLevel(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
         return this._homeGateway.finishLevel(movementAdd);
     }

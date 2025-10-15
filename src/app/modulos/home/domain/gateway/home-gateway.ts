@@ -15,6 +15,8 @@ export abstract class HomeGateway{
     abstract getTimeGame() : Observable<ResponseApi>;
 
     abstract movementAdded(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
+
+    abstract recordKoban(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
     
     abstract finishLevel(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
     

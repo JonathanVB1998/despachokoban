@@ -33,6 +33,10 @@ export class HomeService {
     async movementAdded(movementAdd: MovementAddedRequest): Promise<any> {
         await lastValueFrom(this._homeUseCases.movementAdded(movementAdd));
     }
+
+    async recordKoban(movementAdd: MovementAddedRequest): Promise<any> {
+        await lastValueFrom(this._homeUseCases.recordKoban(movementAdd));
+    }
     
     async finishLevel(movementAdd: MovementAddedRequest): Promise<number> {
         const res = await lastValueFrom(this._homeUseCases.finishLevel(movementAdd));
