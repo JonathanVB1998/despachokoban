@@ -1,4 +1,5 @@
 export interface MovementAddedRequest {
     levelId: number,
-    userId: number
+    userId: number,
+    minutes: string | null;
 }

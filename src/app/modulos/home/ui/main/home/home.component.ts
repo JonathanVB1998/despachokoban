@@ -22,7 +22,7 @@ export class HomeComponent {
     private _homeService: HomeService
   ){}
   gameMap: GameMap = { level: 1};
-  movementAdd: MovementAddedRequest = {levelId: 0, userId: 0}
+  movementAdd: MovementAddedRequest = {levelId: 0, userId: 0, minutes: ""}
 
   board: string[][] = [];
   totalLevel: number = 0;
@@ -111,6 +111,7 @@ checkCompletion() {
     
     if(this.gameMap.level < this.totalLevel){
       this.gameMap.level++;
+      this.finishLevel();
       this.getMap();
     } else{
       console.log("Finalizo el Juego, felicidades");
@@ -150,6 +151,14 @@ async movementAdded(){
   this.movementAdd.userId = this.userId;
 
   await this._homeService.movementAdded(this.movementAdd);
+}
+
+async finishLevel(){
+  this.movementAdd.levelId = this.gameMap.level;
+  this.movementAdd.userId = this.userId;
+  this.movementAdd.minutes = this.display;
+
+  await this._homeService.finishLevel(this.movementAdd);
 }
 
 async startCountdown() {
