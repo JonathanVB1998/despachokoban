@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { HomeService } from '../../../../shared/infraestructure/services/home/home.service';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -9,16 +9,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-board: string[][] = [
-  ['#', '#', '#', '#', '#', '#', '#', '#'],
-  ['#', 'P', '.', '.', '.', '.', '.', '#'],
-  ['#', '.', 'O', 'O', '.', '.', '.', '#'],
-  ['#', '.', '.', '.', 'X', '.', '.', '#'],
-  ['#', '.', '.', '.', 'X', '.', '.', '#'],
-  ['#', '.', '.', '.', '.', '.', '.', '#'],
-  ['#', '#', '#', '#', '#', '#', '#', '#']
-];
 
+  constructor(
+    private _homeService: HomeService
+  ){}
+  level: number = 1;
+
+board: string[][] = [];
+board2: string[][] = [ ['#', '#', '#', '#', '#', '#', '#', '#'], ['#', 'P', '.', '.', '.', '.', '.', '#'], ['#', '.', 'O', 'O', '.', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', '.', '.', '.', '#'], ['#', '#', '#', '#', '#', '#', '#', '#'] ];
 
 
   playerPos = { x: 1, y: 1 };
@@ -27,7 +25,7 @@ board: string[][] = [
   goals = ['X'];         // todas las metas
 
   // Guardamos las metas para restaurarlas cuando la caja o jugador se mueva
-  goalBoard: string[][] = this.board.map(row => row.map(cell => this.goals.includes(cell) ? cell : ''));
+  goalBoard: string[][] = [];
 
   @HostListener('window:keydown', ['$event'])
   handleKey(event: KeyboardEvent) {
@@ -93,6 +91,25 @@ checkCompletion() {
    setTimeout(() => {
     alert('¡Completado!');
   }, 200);// todas las metas tienen caja
+}
+ async ngOnInit(): Promise<void>{
+  this.getMap();
+ }
+
+async getMap() {
+  const reservation = await this._homeService.getMapLevel(this.level);
+
+  // 👇 Convierte el string a un arreglo bidimensional real
+  this.board = JSON.parse(reservation);
+
+   // ✅ recalcular metas en base al nuevo tablero
+  this.goalBoard = this.board.map(row =>
+    row.map(cell => this.goals.includes(cell) ? cell : '')
+  );
+
+  // ✅ encontrar posición inicial del jugador P
+  console.log(this.board); // para verificar que quedó igual que el original
+  console.log(this.board2);
 }
 
 }

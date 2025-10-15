@@ -12,5 +12,8 @@ export class HomeService {
         private toolsService: ToolsService
     ){}
 
-    
+    async getMapLevel(level: number): Promise<string> {
+        const res = await lastValueFrom(this._homeUseCases.getMapLevel(level));
+        return res.data;
+    }
 }

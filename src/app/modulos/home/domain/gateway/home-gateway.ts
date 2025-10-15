@@ -6,5 +6,5 @@ import { Injectable } from '@angular/core';
   providedIn: 'root' // o 'any'
 })
 export abstract class HomeGateway{
-
+    abstract getMapLevel(level:number): Observable<ResponseApi>;
 }

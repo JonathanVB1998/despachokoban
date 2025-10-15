@@ -8,4 +8,8 @@ import { Observable } from "rxjs";
 })
 export class HomeUserCases{
       constructor(private _homeGateway: HomeGateway){}
+
+      getMapLevel(level: number):Observable<ResponseApi>{
+        return this._homeGateway.getMapLevel(level);
+    }
 }

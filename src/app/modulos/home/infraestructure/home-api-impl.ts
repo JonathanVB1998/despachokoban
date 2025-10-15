@@ -8,4 +8,8 @@ import { HomeGateway } from "../domain/gateway/home-gateway";
 })
 export class HomeUserApiImpl extends HomeGateway {
     constructor(private apiService: ApiService){ super()}
+
+    getMapLevel(level: number): Observable<ResponseApi> {
+        return this.apiService.get<ResponseApi>(`gamemapkoban/getMapLevel`);
+    }
 }
