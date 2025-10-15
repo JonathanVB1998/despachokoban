@@ -2,15 +2,19 @@ import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeService } from '../../../../shared/infraestructure/services/home/home.service';
 import { GameMap } from '../../../../shared/domain/models/gameMap';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
- 
+  minutesInput: number = 2; // Lo que ingresará el usuario
+  display: string = '00:00'; // Lo que se muestra
+  private interval: any;
+
   constructor(
     private _homeService: HomeService
   ){}
@@ -102,6 +106,7 @@ checkCompletion() {
  async ngOnInit(): Promise<void>{
   this.getTotalMaps();
   this.getMap();
+  this.startCountdown();
  }
 
 async getMap() {
@@ -121,5 +126,40 @@ async getMap() {
 async getTotalMaps() {
   this.totalLevel = await this._homeService.getTotalMaps();
 }
+startCountdown() {
+    // Cancelar cualquier intervalo anterior
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
 
+    if (!this.minutesInput || this.minutesInput <= 0) {
+      alert('Ingresa un número válido de minutos');
+      return;
+    }
+
+    let totalSeconds = this.minutesInput * 60;
+    this.updateDisplay(totalSeconds);
+
+    this.interval = setInterval(() => {
+      totalSeconds--;
+      if (totalSeconds < 0) {
+        clearInterval(this.interval);
+        this.display = '¡Tiempo terminado!';
+        return;
+      }
+      this.updateDisplay(totalSeconds);
+    }, 1000);
+  }
+
+  private updateDisplay(seconds: number) {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    this.display = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }
+
+  ngOnDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
 }

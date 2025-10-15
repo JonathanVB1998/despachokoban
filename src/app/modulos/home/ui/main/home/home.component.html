@@ -1,3 +1,13 @@
+
+
+
+<div style="text-align: center; margin-top: 50px;">
+  <h1>Cuenta regresiva</h1>
+  <div style="font-size: 48px; font-weight: bold;">{{ display }}</div>
+  <br>
+</div>
+
+<div class="container-koban">
 <div class="board">
   <div *ngFor="let row of board; let y = index" class="row">
     <div *ngFor="let cell of row" class="cell" [ngClass]="cell">
@@ -5,3 +15,5 @@
     </div>
   </div>
 </div>
+</div>
+
