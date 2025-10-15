@@ -22,4 +22,9 @@ export class HomeService {
         const res = await lastValueFrom(this._homeUseCases.getTotalMaps());
         return res.data;
     }
+
+    async getTimeGame(): Promise<string> {
+        const res = await lastValueFrom(this._homeUseCases.getTimeGame());
+        return res.data;
+    }
 }

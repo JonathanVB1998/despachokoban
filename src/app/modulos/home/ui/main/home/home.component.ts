@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  minutesInput: number = 2; // Lo que ingresará el usuario
+  minutesInput: number = 0; // Lo que ingresará el usuario
   display: string = '00:00'; // Lo que se muestra
   private interval: any;
 
@@ -126,7 +126,9 @@ async getMap() {
 async getTotalMaps() {
   this.totalLevel = await this._homeService.getTotalMaps();
 }
-startCountdown() {
+
+async startCountdown() {
+  this.minutesInput = Number(await this._homeService.getTimeGame());
     // Cancelar cualquier intervalo anterior
     if (this.interval) {
       clearInterval(this.interval);

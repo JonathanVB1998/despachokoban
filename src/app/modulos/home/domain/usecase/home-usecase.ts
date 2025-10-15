@@ -13,7 +13,13 @@ export class HomeUserCases{
     getMapLevel(gameMap: GameMap):Observable<ResponseApi>{
         return this._homeGateway.getMapLevel(gameMap);
     }
+
     getTotalMaps():Observable<ResponseApi>{
         return this._homeGateway.getTotalMaps();
     }
+
+    getTimeGame():Observable<ResponseApi>{
+        return this._homeGateway.getTimeGame();
+    }
+
 }
