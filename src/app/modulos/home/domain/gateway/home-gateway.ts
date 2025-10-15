@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { Injectable } from '@angular/core';
 import { GameMap } from "../../../shared/domain/models/gameMap";
 import { MovementAddedRequest } from "../../../shared/domain/request/movementAddedRequest";
+import { GamerRequest } from "../../../shared/domain/request/gamerRequest";
 
 @Injectable({
   providedIn: 'root' // o 'any'
@@ -17,6 +18,8 @@ export abstract class HomeGateway{
     abstract getTimeGame() : Observable<ResponseApi>;
 
     abstract movementAdded(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
+
+    abstract userAdded(movementAdd: GamerRequest) : Observable<ResponseApi>;
 
     abstract recordKoban(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
     

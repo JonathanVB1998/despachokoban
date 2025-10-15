@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { HomeGateway } from "../domain/gateway/home-gateway";
 import { GameMap } from "../../shared/domain/models/gameMap";
 import { MovementAddedRequest } from "../../shared/domain/request/movementAddedRequest";
+import { GamerRequest } from "../../shared/domain/request/gamerRequest";
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +31,10 @@ export class HomeUserApiImpl extends HomeGateway {
 
     movementAdded(movementAdd: MovementAddedRequest) : Observable<ResponseApi> {
         return this.apiService.post<ResponseApi>(`gamemapkoban/movementAdded`, movementAdd);
+    }
+
+    userAdded(movementAdd: GamerRequest) : Observable<ResponseApi> {
+        return this.apiService.post<ResponseApi>(`gamemapkoban/userAdded`, movementAdd);
     }
 
     recordKoban(movementAdd: MovementAddedRequest) : Observable<ResponseApi> {

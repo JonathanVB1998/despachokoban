@@ -6,6 +6,7 @@ import { HomeUserCases } from "../../../../home/domain/usecase/home-usecase";
 import { GameMap } from "../../../domain/models/gameMap";
 import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
 import { RecordKoban } from "../../../domain/models/RecordKoban";
+import { GamerRequest } from "../../../domain/request/gamerRequest";
 
 @Injectable({
     providedIn: 'root'
@@ -37,6 +38,11 @@ export class HomeService {
 
     async movementAdded(movementAdd: MovementAddedRequest): Promise<any> {
         await lastValueFrom(this._homeUseCases.movementAdded(movementAdd));
+    }
+
+    async userAdded(movementAdd: GamerRequest): Promise<number> {
+        const res = await lastValueFrom(this._homeUseCases.userAdded(movementAdd));
+        return res.data;
     }
 
     async recordKoban(movementAdd: MovementAddedRequest): Promise<any> {

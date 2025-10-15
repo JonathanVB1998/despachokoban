@@ -5,7 +5,7 @@ import { GameMap } from '../../../../shared/domain/models/gameMap';
 import { FormsModule } from '@angular/forms';
 import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
 import { RecordKoban } from '../../../../shared/domain/models/RecordKoban';
-
+import { GamerRequest } from '../../../../shared/domain/request/gamerRequest';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -28,7 +28,7 @@ export class HomeComponent {
   bestRecords: RecordKoban[] = [];
   board: string[][] = [];
   totalLevel: number = 0;
-
+  gamer: GamerRequest = {name: ""}
   playerPos = { x: 1, y: 1 };
 
   movableBoxes = ['O'];  // todas las cajas movibles
@@ -50,6 +50,10 @@ export class HomeComponent {
   }
 
 movePlayer(dx: number, dy: number) {
+  if(this.userId == 0){
+    this.openModal();
+    return;
+  }
   const newX = this.playerPos.x + dx;
   const newY = this.playerPos.y + dy;
 
@@ -127,7 +131,6 @@ checkCompletion() {
  async ngOnInit(): Promise<void>{
   this.getTotalMaps();
   this.getMap();
-  this.startCountdown();
   this.getRecordKoban();
 
   if(this.userId == 0)
@@ -166,6 +169,12 @@ async movementAdded(){
   this.movementAdd.userId = this.userId;
 
   await this._homeService.movementAdded(this.movementAdd);
+}
+
+async userAdded() {
+  this.userId = await this._homeService.userAdded(this.gamer);
+
+   this.startCountdown();
 }
 
 async recordKoban(){
@@ -251,7 +260,8 @@ closeModal() {
 
 saveScore() {
   if(this.playerName.trim() !== '') {
-    console.log('Jugador:', this.playerName);
+    this.gamer.name = this.playerName.trim();
+    this.userAdded();
     this.closeModal();
   }
 }
