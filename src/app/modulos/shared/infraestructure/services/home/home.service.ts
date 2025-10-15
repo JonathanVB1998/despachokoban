@@ -17,4 +17,9 @@ export class HomeService {
         const res = await lastValueFrom(this._homeUseCases.getMapLevel(gameMap));
         return res.data;
     }
+
+    async getTotalMaps(): Promise<number> {
+        const res = await lastValueFrom(this._homeUseCases.getTotalMaps());
+        return res.data;
+    }
 }

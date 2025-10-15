@@ -8,4 +8,6 @@ import { GameMap } from "../../../shared/domain/models/gameMap";
 })
 export abstract class HomeGateway{
     abstract getMapLevel(gameMap:GameMap): Observable<ResponseApi>;
+    
+    abstract getTotalMaps() : Observable<ResponseApi>;
 }

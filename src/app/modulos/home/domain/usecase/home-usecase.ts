@@ -8,9 +8,12 @@ import { GameMap } from "../../../shared/domain/models/gameMap";
     providedIn: 'root'
 })
 export class HomeUserCases{
-      constructor(private _homeGateway: HomeGateway){}
+    constructor(private _homeGateway: HomeGateway){}
 
-      getMapLevel(gameMap: GameMap):Observable<ResponseApi>{
+    getMapLevel(gameMap: GameMap):Observable<ResponseApi>{
         return this._homeGateway.getMapLevel(gameMap);
+    }
+    getTotalMaps():Observable<ResponseApi>{
+        return this._homeGateway.getTotalMaps();
     }
 }

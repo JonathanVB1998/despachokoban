@@ -17,8 +17,7 @@ export class HomeComponent {
   gameMap: GameMap = { level: 1};
 
   board: string[][] = [];
-  board2: string[][] = [ ['#', '#', '#', '#', '#', '#', '#', '#'], ['#', 'P', '.', '.', '.', '.', '.', '#'], ['#', '.', 'O', 'O', '.', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', '.', '.', '.', '#'], ['#', '#', '#', '#', '#', '#', '#', '#'] ];
-
+  totalLevel: number = 0;
 
   playerPos = { x: 1, y: 1 };
 
@@ -90,14 +89,18 @@ checkCompletion() {
     }
   }
    setTimeout(() => {
-    if(this.gameMap.level < 5){
+    
+    if(this.gameMap.level < this.totalLevel){
       this.gameMap.level++;
       this.getMap();
+    } else{
+      console.log("Finalizo el Juego, felicidades");
     }
 
   }, 200);// todas las metas tienen caja
 }
  async ngOnInit(): Promise<void>{
+  this.getTotalMaps();
   this.getMap();
  }
 
@@ -113,6 +116,10 @@ async getMap() {
   this.goalBoard = this.board.map(row =>
     row.map(cell => this.goals.includes(cell) ? cell : '')
   );
+}
+
+async getTotalMaps() {
+  this.totalLevel = await this._homeService.getTotalMaps();
 }
 
 }
