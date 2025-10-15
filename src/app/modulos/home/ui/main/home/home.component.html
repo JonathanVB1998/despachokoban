@@ -1,27 +1,71 @@
-
-
-
 <div style="text-align: center; margin-top: 50px;">
   <h1>Cuenta regresiva</h1>
   <div style="font-size: 48px; font-weight: bold;">{{ display }}</div>
   <br>
 </div>
 
+<!-- Contenedor principal con flex -->
+<div class="main-container" style="display: flex; justify-content: space-between; align-items: flex-start; margin-top: 20px;">
 
-
-<div class="container-koban">
-  
-<div class="board">
-  <div *ngFor="let row of board; let y = index" class="row">
-    <div *ngFor="let cell of row" class="cell" [ngClass]="cell">
-      {{ cell }}
+  <!-- Lado izquierdo: board y puntuaje -->
+  <div class="left-side" style="width: 62%;">
+    <div class="container-koban">
+      <div class="board">
+        <div *ngFor="let row of board; let y = index" class="row">
+          <div *ngFor="let cell of row" class="cell" [ngClass]="cell">
+            {{ cell }}
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <h1 style="font-size: 20px; margin: 0;">Puntuaje</h1>
+        <div style="font-size: 20px; font-weight: bold;">{{ score }}</div>
+        <br>
+      </div>
     </div>
   </div>
-</div>
-<div style="text-align: center;">
-  <h1 style="font-size: 20px; margin: 0;">Puntuaje</h1>
-  <div style="font-size: 20px; font-weight: bold;">{{ score }}</div>
-  <br>
-</div>
-</div>
 
+  <!-- Lado derecho: tabla de movimientos -->
+  <div class="right-side" style="width: 25%;">
+    <h2 style="margin: 0;">Tabla de Movimientos</h2>
+    <table class="table table-striped table-bordered table-hover table-responsive">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Jugador</th>
+          <th>Nivel</th>
+          <th>Movimientos</th>
+          <th>Tiempo</th>
+          <th>Puntos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Juan</td>
+          <td>1</td>
+          <td>30</td>
+          <td>1:45</td>
+          <td>667</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Ana</td>
+          <td>1</td>
+          <td>25</td>
+          <td>1:30</td>
+          <td>800</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Pedro</td>
+          <td>1</td>
+          <td>20</td>
+          <td>1:20</td>
+          <td>1000</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
