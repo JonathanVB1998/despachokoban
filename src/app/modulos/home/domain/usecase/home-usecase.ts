@@ -3,14 +3,32 @@ import { HomeGateway } from "../gateway/home-gateway";
 import { ResponseApi } from "../../../shared/domain/models/responseApi";
 import { Observable } from "rxjs";
 import { GameMap } from "../../../shared/domain/models/gameMap";
+import { MovementAddedRequest } from "../../../shared/domain/request/movementAddedRequest";
 
 @Injectable({
     providedIn: 'root'
 })
 export class HomeUserCases{
-      constructor(private _homeGateway: HomeGateway){}
+    constructor(private _homeGateway: HomeGateway){}
 
-      getMapLevel(gameMap: GameMap):Observable<ResponseApi>{
+    getMapLevel(gameMap: GameMap):Observable<ResponseApi>{
         return this._homeGateway.getMapLevel(gameMap);
     }
+
+    getTotalMaps():Observable<ResponseApi>{
+        return this._homeGateway.getTotalMaps();
+    }
+
+    getTimeGame():Observable<ResponseApi>{
+        return this._homeGateway.getTimeGame();
+    }
+
+    movementAdded(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
+        return this._homeGateway.movementAdded(movementAdd);
+    }
+
+    resetMovements(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
+        return this._homeGateway.resetMovements(movementAdd);
+    }
+
 }

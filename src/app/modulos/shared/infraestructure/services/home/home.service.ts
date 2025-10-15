@@ -4,6 +4,8 @@ import { ResponseApi } from "../../../domain/models/responseApi";
 import { ToolsService } from "../tools/tools.service";
 import { HomeUserCases } from "../../../../home/domain/usecase/home-usecase";
 import { GameMap } from "../../../domain/models/gameMap";
+import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -16,5 +18,23 @@ export class HomeService {
     async getMapLevel(gameMap: GameMap): Promise<string> {
         const res = await lastValueFrom(this._homeUseCases.getMapLevel(gameMap));
         return res.data;
+    }
+
+    async getTotalMaps(): Promise<number> {
+        const res = await lastValueFrom(this._homeUseCases.getTotalMaps());
+        return res.data;
+    }
+
+    async getTimeGame(): Promise<string> {
+        const res = await lastValueFrom(this._homeUseCases.getTimeGame());
+        return res.data;
+    }
+
+    async movementAdded(movementAdd: MovementAddedRequest): Promise<any> {
+        await lastValueFrom(this._homeUseCases.movementAdded(movementAdd));
+    }
+
+    async resetMovements(movementAdd: MovementAddedRequest): Promise<any> {
+        await lastValueFrom(this._homeUseCases.resetMovements(movementAdd));
     }
 }
