@@ -1,3 +1,3 @@
 export interface GameMap {
-    level: number | null;
+    level: number;
 }

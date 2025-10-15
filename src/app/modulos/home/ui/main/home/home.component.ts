@@ -90,7 +90,11 @@ checkCompletion() {
     }
   }
    setTimeout(() => {
-    alert('¡Completado!');
+    if(this.gameMap.level < 5){
+      this.gameMap.level++;
+      this.getMap();
+    }
+
   }, 200);// todas las metas tienen caja
 }
  async ngOnInit(): Promise<void>{
@@ -98,6 +102,8 @@ checkCompletion() {
  }
 
 async getMap() {
+  this.board = [];
+  this.playerPos = { x: 1, y: 1 };
   const reservation = await this._homeService.getMapLevel(this.gameMap);
 
   // 👇 Convierte el string a un arreglo bidimensional real
@@ -107,10 +113,6 @@ async getMap() {
   this.goalBoard = this.board.map(row =>
     row.map(cell => this.goals.includes(cell) ? cell : '')
   );
-
-  // ✅ encontrar posición inicial del jugador P
-  console.log(this.board); // para verificar que quedó igual que el original
-  console.log(this.board2);
 }
 
 }
