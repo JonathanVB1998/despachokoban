@@ -16,6 +16,7 @@ export class HomeComponent {
   minutesInput: number = 0; // Lo que ingresará el usuario
   display: string = '00:00'; // Lo que se muestra
   userId: number = 1;
+  score: number = 0;
   private interval: any;
 
   constructor(
@@ -160,7 +161,7 @@ async finishLevel(){
   this.movementAdd.userId = this.userId;
   this.movementAdd.minutes = this.display;
 
-  await this._homeService.finishLevel(this.movementAdd);
+  this.score = this.score + await this._homeService.finishLevel(this.movementAdd);
 }
 
 async startCountdown() {

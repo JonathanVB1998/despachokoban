@@ -34,8 +34,9 @@ export class HomeService {
         await lastValueFrom(this._homeUseCases.movementAdded(movementAdd));
     }
     
-    async finishLevel(movementAdd: MovementAddedRequest): Promise<any> {
-        await lastValueFrom(this._homeUseCases.finishLevel(movementAdd));
+    async finishLevel(movementAdd: MovementAddedRequest): Promise<number> {
+        const res = await lastValueFrom(this._homeUseCases.finishLevel(movementAdd));
+        return res.data;
     }
 
     async resetMovements(movementAdd: MovementAddedRequest): Promise<any> {
