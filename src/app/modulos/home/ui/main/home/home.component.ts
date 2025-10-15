@@ -4,6 +4,7 @@ import { HomeService } from '../../../../shared/infraestructure/services/home/ho
 import { GameMap } from '../../../../shared/domain/models/gameMap';
 import { FormsModule } from '@angular/forms';
 import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
+import { RecordKoban } from '../../../../shared/domain/models/RecordKoban';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomeComponent {
   ){}
   gameMap: GameMap = { level: 1};
   movementAdd: MovementAddedRequest = {levelId: 0, userId: 0, minutes: ""}
-
+  bestRecords: RecordKoban[] = [];
   board: string[][] = [];
   totalLevel: number = 0;
 
@@ -126,6 +127,7 @@ checkCompletion() {
   this.getTotalMaps();
   this.getMap();
   this.startCountdown();
+  this.getRecordKoban();
  }
 
 async getMap() {
@@ -149,6 +151,12 @@ async getMap() {
 
 async getTotalMaps() {
   this.totalLevel = await this._homeService.getTotalMaps();
+}
+
+async getRecordKoban(){
+  this.bestRecords = await this._homeService.getRecordKoban();
+
+  console.log(this.bestRecords);
 }
 
 async movementAdded(){

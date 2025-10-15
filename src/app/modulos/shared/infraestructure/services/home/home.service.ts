@@ -5,6 +5,7 @@ import { ToolsService } from "../tools/tools.service";
 import { HomeUserCases } from "../../../../home/domain/usecase/home-usecase";
 import { GameMap } from "../../../domain/models/gameMap";
 import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
+import { RecordKoban } from "../../../domain/models/RecordKoban";
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,10 @@ export class HomeService {
 
     async getTotalMaps(): Promise<number> {
         const res = await lastValueFrom(this._homeUseCases.getTotalMaps());
+        return res.data;
+    }
+    async getRecordKoban(): Promise<RecordKoban[]> {
+        const res = await lastValueFrom(this._homeUseCases.getRecordKoban());
         return res.data;
     }
 

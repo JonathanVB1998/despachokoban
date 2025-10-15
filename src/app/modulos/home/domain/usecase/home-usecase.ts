@@ -19,6 +19,10 @@ export class HomeUserCases{
         return this._homeGateway.getTotalMaps();
     }
 
+    getRecordKoban():Observable<ResponseApi>{
+        return this._homeGateway.getRecordKoban();
+    }
+
     getTimeGame():Observable<ResponseApi>{
         return this._homeGateway.getTimeGame();
     }

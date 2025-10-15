@@ -19,6 +19,10 @@ export class HomeUserApiImpl extends HomeGateway {
     getTotalMaps() : Observable<ResponseApi> {
         return this.apiService.get<ResponseApi>(`gamemapkoban/getTotalMaps`);
     }
+    
+    getRecordKoban() : Observable<ResponseApi> {
+        return this.apiService.get<ResponseApi>(`gamemapkoban/getRecordKoban`);
+    }
 
     getTimeGame() : Observable<ResponseApi> {
         return this.apiService.get<ResponseApi>(`gamemapkoban/getTimeGame`);
