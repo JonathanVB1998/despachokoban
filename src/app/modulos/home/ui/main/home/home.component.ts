@@ -79,7 +79,6 @@ movePlayer(dx: number, dy: number) {
       this.board[newY][newX] = 'P';
       this.checkCompletion();
 
-      console.log(`Jugador se movió a (${newX}, ${newY}) con caja`);
       this.movementAdded();
     }
     return;
@@ -92,7 +91,6 @@ movePlayer(dx: number, dy: number) {
     this.board[newY][newX] = 'P';
     this.checkCompletion();
 
-    console.log(`Jugador se movió a (${newX}, ${newY})`);
     this.movementAdded();
   }
 
