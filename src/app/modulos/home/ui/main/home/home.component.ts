@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeService } from '../../../../shared/infraestructure/services/home/home.service';
+import { GameMap } from '../../../../shared/domain/models/gameMap';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -9,14 +10,14 @@ import { HomeService } from '../../../../shared/infraestructure/services/home/ho
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-
+ 
   constructor(
     private _homeService: HomeService
   ){}
-  level: number = 1;
+  gameMap: GameMap = { level: 1};
 
-board: string[][] = [];
-board2: string[][] = [ ['#', '#', '#', '#', '#', '#', '#', '#'], ['#', 'P', '.', '.', '.', '.', '.', '#'], ['#', '.', 'O', 'O', '.', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', '.', '.', '.', '#'], ['#', '#', '#', '#', '#', '#', '#', '#'] ];
+  board: string[][] = [];
+  board2: string[][] = [ ['#', '#', '#', '#', '#', '#', '#', '#'], ['#', 'P', '.', '.', '.', '.', '.', '#'], ['#', '.', 'O', 'O', '.', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', 'X', '.', '.', '#'], ['#', '.', '.', '.', '.', '.', '.', '#'], ['#', '#', '#', '#', '#', '#', '#', '#'] ];
 
 
   playerPos = { x: 1, y: 1 };
@@ -97,7 +98,7 @@ checkCompletion() {
  }
 
 async getMap() {
-  const reservation = await this._homeService.getMapLevel(this.level);
+  const reservation = await this._homeService.getMapLevel(this.gameMap);
 
   // 👇 Convierte el string a un arreglo bidimensional real
   this.board = JSON.parse(reservation);

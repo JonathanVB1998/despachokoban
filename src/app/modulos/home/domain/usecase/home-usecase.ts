@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HomeGateway } from "../gateway/home-gateway";
 import { ResponseApi } from "../../../shared/domain/models/responseApi";
 import { Observable } from "rxjs";
+import { GameMap } from "../../../shared/domain/models/gameMap";
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,7 @@ import { Observable } from "rxjs";
 export class HomeUserCases{
       constructor(private _homeGateway: HomeGateway){}
 
-      getMapLevel(level: number):Observable<ResponseApi>{
-        return this._homeGateway.getMapLevel(level);
+      getMapLevel(gameMap: GameMap):Observable<ResponseApi>{
+        return this._homeGateway.getMapLevel(gameMap);
     }
 }

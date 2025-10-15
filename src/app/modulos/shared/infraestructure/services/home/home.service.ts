@@ -3,6 +3,7 @@ import { lastValueFrom } from "rxjs";
 import { ResponseApi } from "../../../domain/models/responseApi";
 import { ToolsService } from "../tools/tools.service";
 import { HomeUserCases } from "../../../../home/domain/usecase/home-usecase";
+import { GameMap } from "../../../domain/models/gameMap";
 @Injectable({
     providedIn: 'root'
 })
@@ -12,8 +13,8 @@ export class HomeService {
         private toolsService: ToolsService
     ){}
 
-    async getMapLevel(level: number): Promise<string> {
-        const res = await lastValueFrom(this._homeUseCases.getMapLevel(level));
+    async getMapLevel(gameMap: GameMap): Promise<string> {
+        const res = await lastValueFrom(this._homeUseCases.getMapLevel(gameMap));
         return res.data;
     }
 }
