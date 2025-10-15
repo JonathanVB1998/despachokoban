@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HomeService } from '../../../../shared/infraestructure/services/home/home.service';
 import { GameMap } from '../../../../shared/domain/models/gameMap';
 import { FormsModule } from '@angular/forms';
+import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -13,12 +15,14 @@ import { FormsModule } from '@angular/forms';
 export class HomeComponent {
   minutesInput: number = 0; // Lo que ingresará el usuario
   display: string = '00:00'; // Lo que se muestra
+  userId: number = 1;
   private interval: any;
 
   constructor(
     private _homeService: HomeService
   ){}
   gameMap: GameMap = { level: 1};
+  movementAdd: MovementAddedRequest = {levelId: 0, userId: 0}
 
   board: string[][] = [];
   totalLevel: number = 0;
@@ -47,14 +51,16 @@ movePlayer(dx: number, dy: number) {
   const newX = this.playerPos.x + dx;
   const newY = this.playerPos.y + dy;
 
+  // Verificar límites del tablero
   if (newY < 0 || newY >= this.board.length) return;
   if (newX < 0 || newX >= this.board[0].length) return;
 
   const nextCell = this.board[newY][newX];
-  const currentCell = this.board[this.playerPos.y][this.playerPos.x];
 
+  // Pared
   if (nextCell === '#') return;
 
+  // Movimiento con caja
   if (this.movableBoxes.includes(nextCell)) {
     const boxX = newX + dx;
     const boxY = newY + dy;
@@ -65,23 +71,34 @@ movePlayer(dx: number, dy: number) {
     const boxDest = this.board[boxY][boxX];
 
     if (boxDest === '.' || this.goals.includes(boxDest)) {
-      this.board[boxY][boxX] = nextCell;  // mover caja
+      // Mover caja
+      this.board[boxY][boxX] = nextCell;
       this.board[newY][newX] = this.goalBoard[newY][newX] || '.';
       this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] || '.';
       this.playerPos = { x: newX, y: newY };
       this.board[newY][newX] = 'P';
+      this.checkCompletion();
+
+      console.log(`Jugador se movió a (${newX}, ${newY}) con caja`);
+      this.movementAdded();
     }
-    this.checkCompletion();  // revisar si completó
     return;
   }
 
+  // Movimiento normal
   if (nextCell === '.' || this.goals.includes(nextCell)) {
     this.board[this.playerPos.y][this.playerPos.x] = this.goalBoard[this.playerPos.y][this.playerPos.x] || '.';
     this.playerPos = { x: newX, y: newY };
     this.board[newY][newX] = 'P';
-    this.checkCompletion();  // revisar si completó
+    this.checkCompletion();
+
+    console.log(`Jugador se movió a (${newX}, ${newY})`);
+    this.movementAdded();
   }
+
+  // Si no se mueve, no imprime nada
 }
+
 
 // Función para revisar si todas las metas tienen caja encima
 checkCompletion() {
@@ -125,6 +142,13 @@ async getMap() {
 
 async getTotalMaps() {
   this.totalLevel = await this._homeService.getTotalMaps();
+}
+
+async movementAdded(){
+  this.movementAdd.levelId = this.gameMap.level;
+  this.movementAdd.userId = this.userId;
+
+  await this._homeService.movementAdded(this.movementAdd);
 }
 
 async startCountdown() {

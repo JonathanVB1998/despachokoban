@@ -3,6 +3,7 @@ import { HomeGateway } from "../gateway/home-gateway";
 import { ResponseApi } from "../../../shared/domain/models/responseApi";
 import { Observable } from "rxjs";
 import { GameMap } from "../../../shared/domain/models/gameMap";
+import { MovementAddedRequest } from "../../../shared/domain/request/movementAddedRequest";
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +21,10 @@ export class HomeUserCases{
 
     getTimeGame():Observable<ResponseApi>{
         return this._homeGateway.getTimeGame();
+    }
+
+    movementAdded(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
+        return this._homeGateway.movementAdded(movementAdd);
     }
 
 }
