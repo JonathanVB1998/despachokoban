@@ -33,4 +33,8 @@ export class HomeService {
     async movementAdded(movementAdd: MovementAddedRequest): Promise<any> {
         await lastValueFrom(this._homeUseCases.movementAdded(movementAdd));
     }
+
+    async resetMovements(movementAdd: MovementAddedRequest): Promise<any> {
+        await lastValueFrom(this._homeUseCases.resetMovements(movementAdd));
+    }
 }

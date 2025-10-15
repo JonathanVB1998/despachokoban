@@ -15,4 +15,6 @@ export abstract class HomeGateway{
     abstract getTimeGame() : Observable<ResponseApi>;
 
     abstract movementAdded(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
+    
+    abstract resetMovements(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
 }

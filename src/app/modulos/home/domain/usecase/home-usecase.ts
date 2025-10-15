@@ -27,4 +27,8 @@ export class HomeUserCases{
         return this._homeGateway.movementAdded(movementAdd);
     }
 
+    resetMovements(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
+        return this._homeGateway.resetMovements(movementAdd);
+    }
+
 }

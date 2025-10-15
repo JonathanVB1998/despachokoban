@@ -129,6 +129,9 @@ async getMap() {
   this.playerPos = { x: 1, y: 1 };
   const reservation = await this._homeService.getMapLevel(this.gameMap);
 
+  if(this.gameMap.level == 1)
+    this.resetMovements();
+  
   // 👇 Convierte el string a un arreglo bidimensional real
   this.board = JSON.parse(reservation);
 
@@ -185,5 +188,12 @@ async startCountdown() {
     if (this.interval) {
       clearInterval(this.interval);
     }
+  }
+
+  async resetMovements(){
+    this.movementAdd.levelId = this.gameMap.level;
+    this.movementAdd.userId = this.userId;
+
+    await this._homeService.resetMovements(this.movementAdd);
   }
 }
