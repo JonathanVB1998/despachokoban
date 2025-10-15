@@ -16,13 +16,14 @@ export class HomeComponent {
   minutesInput: number = 0; // Lo que ingresará el usuario
   display: string = '00:00'; // Lo que se muestra
   userId: number = 1;
+  score: number = 0;
   private interval: any;
 
   constructor(
     private _homeService: HomeService
   ){}
   gameMap: GameMap = { level: 1};
-  movementAdd: MovementAddedRequest = {levelId: 0, userId: 0}
+  movementAdd: MovementAddedRequest = {levelId: 0, userId: 0, minutes: ""}
 
   board: string[][] = [];
   totalLevel: number = 0;
@@ -111,9 +112,12 @@ checkCompletion() {
     
     if(this.gameMap.level < this.totalLevel){
       this.gameMap.level++;
+      this.finishLevel();
       this.getMap();
     } else{
-      console.log("Finalizo el Juego, felicidades");
+      this.finishLevel();
+      this.display = "00:00";
+      this.recordKoban();
     }
 
   }, 200);// todas las metas tienen caja
@@ -129,8 +133,10 @@ async getMap() {
   this.playerPos = { x: 1, y: 1 };
   const reservation = await this._homeService.getMapLevel(this.gameMap);
 
-  if(this.gameMap.level == 1)
+  if(this.gameMap.level == 1){
+    this.resetLevelComplete();
     this.resetMovements();
+  }
   
   // 👇 Convierte el string a un arreglo bidimensional real
   this.board = JSON.parse(reservation);
@@ -150,6 +156,20 @@ async movementAdded(){
   this.movementAdd.userId = this.userId;
 
   await this._homeService.movementAdded(this.movementAdd);
+}
+
+async recordKoban(){
+  this.movementAdd.userId = this.userId;
+
+  await this._homeService.recordKoban(this.movementAdd);
+}
+
+async finishLevel(){
+  this.movementAdd.levelId = this.gameMap.level;
+  this.movementAdd.userId = this.userId;
+  this.movementAdd.minutes = this.display;
+
+  this.score = this.score + await this._homeService.finishLevel(this.movementAdd);
 }
 
 async startCountdown() {
@@ -195,5 +215,12 @@ async startCountdown() {
     this.movementAdd.userId = this.userId;
 
     await this._homeService.resetMovements(this.movementAdd);
+  }
+
+  async resetLevelComplete(){
+    this.movementAdd.levelId = this.gameMap.level;
+    this.movementAdd.userId = this.userId;
+
+  await this._homeService.resetLevelComplete(this.movementAdd);
   }
 }
