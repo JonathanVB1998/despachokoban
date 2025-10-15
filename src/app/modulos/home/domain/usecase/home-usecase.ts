@@ -35,4 +35,8 @@ export class HomeUserCases{
         return this._homeGateway.resetMovements(movementAdd);
     }
 
+    resetLevelComplete(movementAdd: MovementAddedRequest):Observable<ResponseApi>{
+        return this._homeGateway.resetLevelComplete(movementAdd);
+    }
+
 }

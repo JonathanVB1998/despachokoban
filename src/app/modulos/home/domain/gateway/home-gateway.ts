@@ -19,4 +19,6 @@ export abstract class HomeGateway{
     abstract finishLevel(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
     
     abstract resetMovements(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
+
+    abstract resetLevelComplete(movementAdd: MovementAddedRequest) : Observable<ResponseApi>;
 }

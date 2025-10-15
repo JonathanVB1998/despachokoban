@@ -35,4 +35,8 @@ export class HomeUserApiImpl extends HomeGateway {
     resetMovements(movementAdd: MovementAddedRequest) : Observable<ResponseApi> {
         return this.apiService.post<ResponseApi>(`gamemapkoban/resetMovements`, movementAdd);
     }
+
+    resetLevelComplete(movementAdd: MovementAddedRequest) : Observable<ResponseApi> {
+        return this.apiService.post<ResponseApi>(`gamemapkoban/resetLevelComplete`, movementAdd);
+    }
 }
