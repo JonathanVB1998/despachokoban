@@ -119,6 +119,7 @@ checkCompletion() {
       this.finishLevel();
       this.display = "00:00";
       this.recordKoban();
+      this.getRecordKoban();
     }
 
   }, 200);// todas las metas tienen caja
@@ -155,8 +156,6 @@ async getTotalMaps() {
 
 async getRecordKoban(){
   this.bestRecords = await this._homeService.getRecordKoban();
-
-  console.log(this.bestRecords);
 }
 
 async movementAdded(){
@@ -168,8 +167,9 @@ async movementAdded(){
 
 async recordKoban(){
   this.movementAdd.userId = this.userId;
-
-  await this._homeService.recordKoban(this.movementAdd);
+  if(this.score > 0){
+    await this._homeService.recordKoban(this.movementAdd);
+  }
 }
 
 async finishLevel(){
@@ -200,6 +200,9 @@ async startCountdown() {
       if (totalSeconds < 0) {
         clearInterval(this.interval);
         this.display = '¡Tiempo terminado!';
+        this.finishLevel();
+        this.recordKoban();
+        this.getRecordKoban();
         return;
       }
       this.updateDisplay(totalSeconds);
