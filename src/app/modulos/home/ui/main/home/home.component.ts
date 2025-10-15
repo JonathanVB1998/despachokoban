@@ -16,7 +16,7 @@ import { RecordKoban } from '../../../../shared/domain/models/RecordKoban';
 export class HomeComponent {
   minutesInput: number = 0; // Lo que ingresará el usuario
   display: string = '00:00'; // Lo que se muestra
-  userId: number = 1;
+  userId: number = 0;
   score: number = 0;
   private interval: any;
 
@@ -129,6 +129,9 @@ checkCompletion() {
   this.getMap();
   this.startCountdown();
   this.getRecordKoban();
+
+  if(this.userId == 0)
+    this.openModal();
  }
 
 async getMap() {
@@ -234,4 +237,23 @@ async startCountdown() {
 
   await this._homeService.resetLevelComplete(this.movementAdd);
   }
+
+  isModalOpen = false;
+playerName: string = '';
+
+openModal() {
+  this.isModalOpen = true;
+}
+
+closeModal() {
+  this.isModalOpen = false;
+}
+
+saveScore() {
+  if(this.playerName.trim() !== '') {
+    console.log('Jugador:', this.playerName);
+    this.closeModal();
+  }
+}
+
 }

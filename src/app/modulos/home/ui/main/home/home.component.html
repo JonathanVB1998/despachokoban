@@ -45,3 +45,13 @@
 </div>
 
 </div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Ingrese su nombre</h2>
+    <input type="text" [(ngModel)]="playerName" placeholder="Nombre del jugador" />
+    <button (click)="saveScore()" class="save-btn">Guardar</button>
+  </div>
+</div>

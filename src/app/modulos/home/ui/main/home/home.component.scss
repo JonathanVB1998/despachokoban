@@ -67,3 +67,80 @@
 .scoreboard-table thead tr:first-child th:last-child {
   border-top-right-radius: 8px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* Fondo del modal */
+.modal {
+  display: none; /* Oculto por defecto */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mostrar modal */
+.modal.show {
+  display: block;
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Botón cerrar */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Input estilo alerta */
+.modal-content input {
+  width: 100%;
+  padding: 8px 10px;
+  margin: 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Botón guardar */
+.save-btn, .open-modal-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-btn:hover, .open-modal-btn:hover {
+  background-color: #45a049;
+}
