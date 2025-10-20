@@ -266,4 +266,10 @@ saveScore() {
   }
 }
 
+reload(){
+  this.gameMap.level = 1;
+  this.startCountdown();
+  this.getMap();
+}
+
 }
