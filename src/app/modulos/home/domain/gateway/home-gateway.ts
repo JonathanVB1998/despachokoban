@@ -11,6 +11,8 @@ import { GamerRequest } from "../../../shared/domain/request/gamerRequest";
 export abstract class HomeGateway{
     abstract getMapLevel(gameMap:GameMap): Observable<ResponseApi>;
 
+    abstract getProducts(): Observable<ResponseApi>;
+    
     abstract getTotalMaps() : Observable<ResponseApi>;
 
     abstract getRecordKoban() : Observable<ResponseApi>;

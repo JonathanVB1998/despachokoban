@@ -15,6 +15,9 @@ export class HomeUserCases{
     getMapLevel(gameMap: GameMap):Observable<ResponseApi>{
         return this._homeGateway.getMapLevel(gameMap);
     }
+    getProducts():Observable<ResponseApi>{
+        return this._homeGateway.getProducts();
+    }
 
     getTotalMaps():Observable<ResponseApi>{
         return this._homeGateway.getTotalMaps();

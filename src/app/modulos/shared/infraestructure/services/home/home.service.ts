@@ -7,7 +7,7 @@ import { GameMap } from "../../../domain/models/gameMap";
 import { MovementAddedRequest } from '../../../../shared/domain/request/movementAddedRequest';
 import { RecordKoban } from "../../../domain/models/RecordKoban";
 import { GamerRequest } from "../../../domain/request/gamerRequest";
-
+import { Products } from "../../../domain/models/products";
 @Injectable({
     providedIn: 'root'
 })
@@ -19,6 +19,11 @@ export class HomeService {
 
     async getMapLevel(gameMap: GameMap): Promise<string> {
         const res = await lastValueFrom(this._homeUseCases.getMapLevel(gameMap));
+        return res.data;
+    }
+
+    async getProducts(): Promise<Products[]>{
+        const res = await lastValueFrom(this._homeUseCases.getProducts());
         return res.data;
     }
 

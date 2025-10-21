@@ -12,16 +12,17 @@
     <div class="container-koban">
       <div class="board">
         <div *ngFor="let row of board; let y = index" class="row">
-          <div *ngFor="let cell of row" class="cell" [ngClass]="cell">
-  <ng-container [ngSwitch]="cell">
-    <img *ngSwitchCase="'P'" src="assets/images/montacargas.png" width="60">
-    <img *ngSwitchCase="'O'" src="assets/images/caja.png" width="50">
-    <img *ngSwitchCase="'X'" src="assets/images/estiba.png" width="50">
-    <img *ngSwitchCase="'#'" src="assets/images/muro.png" class="size-img">
-    <span *ngSwitchDefault>{{ cell == '.' ? '' : cell }}</span>
-  </ng-container>
+  <div *ngFor="let cell of row; let x = index" class="cell" [ngClass]="cell">
+    <ng-container [ngSwitch]="cell">
+      <img *ngSwitchCase="'P'" src="assets/images/montacargas.png" width="60">
+      <img *ngSwitchCase="'O'" [src]="getBoxImage(boxIds[y][x])" width="50">
+      <img *ngSwitchCase="'X'" src="assets/images/estiba.png" width="50">
+      <img *ngSwitchCase="'#'" src="assets/images/muro.png" class="size-img">
+      <span *ngSwitchDefault>{{ cell == '.' ? '' : cell }}</span>
+    </ng-container>
+  </div>
 </div>
-        </div>
+
       </div>
       <div style="text-align: center;">
         <h1 style="font-size: 20px; margin: 0;">Puntuaje</h1>
